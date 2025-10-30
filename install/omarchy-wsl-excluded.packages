@@ -1,0 +1,45 @@
+# Packages that should NOT be installed in WSL
+# These packages are incompatible with WSL environment
+
+# Bootloader and boot-related packages
+limine
+limine-mkinitcpio-hook
+limine-snapper-sync
+plymouth
+
+# Linux kernel (WSL uses Windows kernel)
+linux
+linux-firmware
+linux-headers
+linux-t2
+linux-t2-headers
+
+# Filesystem tools (WSL doesn't use btrfs)
+btrfs-progs
+snapper
+
+# Bluetooth packages
+blueberry
+elephant-bluetooth
+
+# Power management
+power-profiles-daemon
+
+# Wireless hardware
+iwd
+wireless-regdb
+broadcom-wl
+
+# Apple/Mac-specific hardware
+apple-bcm-firmware
+apple-t2-audio-config
+macbook12-spi-driver-dkms
+t2fanrd
+tiny-dfr
+
+# NVIDIA drivers (WSLg handles GPU)
+nvidia-dkms
+nvidia-open-dkms
+nvidia-utils
+lib32-nvidia-utils
+libva-nvidia-driver

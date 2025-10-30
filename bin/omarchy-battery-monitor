@@ -2,6 +2,11 @@
 
 # Designed to be run by systemd timer every 30 seconds and alerts if battery is low
 
+# Skip in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  exit 0
+fi
+
 BATTERY_THRESHOLD=10
 NOTIFICATION_FLAG="/run/user/$UID/omarchy_battery_notified"
 BATTERY_LEVEL=$(omarchy-battery-remaining)

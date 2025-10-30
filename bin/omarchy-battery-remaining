@@ -2,6 +2,12 @@
 
 # Returns the battery percentage remaining as an integer.
 
+# Skip in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  echo "100"
+  exit 0
+fi
+
 upower -i $(upower -e | grep BAT) \
 | awk -F: '/percentage/ {
     gsub(/[%[:space:]]/, "", $2);

@@ -5,6 +5,12 @@ set -e
 COMMAND="$1"
 OMARCHY_PATH=${OMARCHY_PATH:-$HOME/.local/share/omarchy}
 
+# Skip snapshots in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  echo "Snapshots not supported in WSL" >&2
+  exit 127
+fi
+
 if [[ -z $COMMAND ]]; then
   echo "Usage: omarchy-snapshot <create|restore>" >&2
   exit 1

@@ -4,4 +4,8 @@ run_logged $OMARCHY_INSTALL/preflight/show-env.sh
 run_logged $OMARCHY_INSTALL/preflight/pacman.sh
 run_logged $OMARCHY_INSTALL/preflight/migrations.sh
 run_logged $OMARCHY_INSTALL/preflight/first-run-mode.sh
-run_logged $OMARCHY_INSTALL/preflight/disable-mkinitcpio.sh
+
+# Skip mkinitcpio hooks in WSL (no initramfs needed)
+if ! is_wsl; then
+  run_logged $OMARCHY_INSTALL/preflight/disable-mkinitcpio.sh
+fi

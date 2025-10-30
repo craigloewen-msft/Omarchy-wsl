@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Skip bluetooth in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  echo "Bluetooth not available in WSL"
+  exit 0
+fi
+
 echo -e "Unblocking bluetooth...\n"
 rfkill unblock bluetooth
 rfkill list bluetooth

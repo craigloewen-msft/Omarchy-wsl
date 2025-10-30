@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Skip bootloader refresh in WSL
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  echo "Bootloader not used in WSL - skipping"
+  exit 0
+fi
+
 if [[ -f /boot/EFI/linux/omarchy_linux.efi ]] && [[ -f /boot/EFI/linux/$(cat /etc/machine-id)_linux.efi ]]; then
   echo "Cleanup extra UKI"
   sudo rm -f /boot/EFI/Linux/$(cat /etc/machine-id)_linux.efi
