@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omarchy System Monitor
+Comment=Run btop in the themed Omarchy terminal
+Exec=/usr/local/bin/omarchy-wslg-run foot --app-id=org.omarchy.btop btop
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;Monitor;

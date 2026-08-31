@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omawrite
+Comment=Distraction-free writing
+Exec=/usr/local/bin/omarchy-wslg-run omawrite
+Icon=accessories-text-editor
+Terminal=false
+Categories=Office;WordProcessor;

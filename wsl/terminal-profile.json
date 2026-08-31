@@ -1,7 +1,7 @@
 {
   "profiles": [
     {
-      "name": "Omarchy",
+      "name": "@DISTRO_NAME@",
       "colorScheme": "Omarchy Tokyo Night",
       "font": {
         "face": "CaskaydiaMono Nerd Font",

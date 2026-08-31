@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omarchy Terminal
+Comment=Themed Omarchy terminal
+Exec=/usr/local/bin/omarchy-wslg-run foot --title Omarchy
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;

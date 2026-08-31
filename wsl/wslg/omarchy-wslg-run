@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+export GALLIUM_DRIVER=d3d12
+exec "$@"
