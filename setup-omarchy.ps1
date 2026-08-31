@@ -90,4 +90,5 @@ Write-Host "`nOmarchy ready at '$dest'" -ForegroundColor Green
 Write-Host "  branch/ref : $branch" -ForegroundColor Green
 Write-Host "  commit     : $commit" -ForegroundColor Green
 Write-Host "  version    : $version" -ForegroundColor Green
-Write-Host "`nNext: ./build-omarchy.ps1   (builds Omarchy-Basic.wsl end to end)" -ForegroundColor Green
+Write-Host "`nNext: ./build-omarchy.ps1        (builds Omarchy-Basic.wsl)" -ForegroundColor Green
+Write-Host "      ./build-omarchy-wslg.ps1   (builds Omarchy-WSLg.wsl)" -ForegroundColor Green

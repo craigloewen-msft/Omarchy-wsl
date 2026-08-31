@@ -1,0 +1,20 @@
+# Lightweight GUI applications that work as individual Windows-managed WSLg
+# windows. Keep compositor, display-manager, hardware, and creative-suite
+# packages out of this profile.
+
+chromium
+evince
+ffmpegthumbnailer
+foot
+gvfs-mtp
+gvfs-nfs
+gvfs-smb
+imv
+mpv
+nautilus
+nautilus-python
+omacalc
+omawrite
+sushi
+xdg-desktop-portal-gtk
+yaru-icon-theme

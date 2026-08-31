@@ -32,6 +32,7 @@ APPS="${APPS:-1}"
 LOGIN="${LOGIN:-1}"
 PRINTING="${PRINTING:-1}"
 INPUT="${INPUT:-1}"
+WSLG="${WSLG:-0}"
 
 # ARCH: amd64 (default) or arm64. On arm64 the base is Arch Linux ARM (ALARM),
 # whose repos don't include the [omarchy] repo, so that's skipped and its
@@ -111,6 +112,12 @@ if [[ $DESKTOP == 1 ]]; then
   done
 else
   log "DESKTOP=0 — installing curated CLI package set only"
+fi
+
+if [[ $WSLG == 1 ]]; then
+  log "Adding lightweight WSLg application set"
+  while read -r p; do [[ -n $p ]] && want[$p]=1; done \
+    < <(read_list "$WSL_DIR/../packages/groups/wslg.packages")
 fi
 
 # On arm64, these packages aren't resolvable from any configured repo
@@ -237,4 +244,4 @@ done
 log "Cleaning package cache"
 sudo pacman -Scc --noconfirm || true
 
-log "Omarchy WSL install complete (DESKTOP=$DESKTOP APPS=$APPS LOGIN=$LOGIN PRINTING=$PRINTING INPUT=$INPUT)"
+log "Omarchy WSL install complete (DESKTOP=$DESKTOP WSLG=$WSLG APPS=$APPS LOGIN=$LOGIN PRINTING=$PRINTING INPUT=$INPUT)"

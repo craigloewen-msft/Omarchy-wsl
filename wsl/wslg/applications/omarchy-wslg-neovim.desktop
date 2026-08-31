@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omarchy Neovim
+Comment=Run Neovim in the themed Omarchy terminal
+Exec=/usr/local/bin/omarchy-wslg-run foot --app-id=org.omarchy.nvim nvim
+Icon=nvim
+Terminal=false
+Categories=Utility;TextEditor;

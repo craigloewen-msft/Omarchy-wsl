@@ -47,6 +47,8 @@ ARG APPS=1
 ARG LOGIN=1
 ARG PRINTING=1
 ARG INPUT=1
+ARG WSLG=0
+ARG DISTRO_NAME=Omarchy
 ARG USERNAME=omarchy
 
 # --- 1. Base prerequisites + pacman keyring (root) --------------------------
@@ -102,7 +104,8 @@ RUN git config --global --add safe.directory /home/$USERNAME/.local/share/omarch
 # --- 5. Run the WSL-adapted Omarchy installer as the omarchy user -----------
 USER $USERNAME
 WORKDIR /home/$USERNAME
-RUN DESKTOP="$DESKTOP" APPS="$APPS" LOGIN="$LOGIN" PRINTING="$PRINTING" INPUT="$INPUT" ARCH="$ARCH" \
+RUN DESKTOP="$DESKTOP" APPS="$APPS" LOGIN="$LOGIN" PRINTING="$PRINTING" INPUT="$INPUT" \
+    WSLG="$WSLG" ARCH="$ARCH" \
     bash /home/$USERNAME/omarchy-wsl/install/omarchy-wsl-install.sh
 
 # --- 6. WSL configuration ---------------------------------------------------
@@ -119,7 +122,27 @@ RUN sed -i 's/\r$//' /etc/wsl.conf
 COPY wsl/wsl-distribution.conf /etc/wsl-distribution.conf
 COPY wsl/oobe.sh /etc/oobe.sh
 COPY wsl/terminal-profile.json /usr/lib/wsl/terminal-profile.json
+COPY wsl/wslg /usr/lib/omarchy-wslg
 RUN sed -i 's/\r$//' /etc/wsl-distribution.conf /etc/oobe.sh /usr/lib/wsl/terminal-profile.json && \
+    find /usr/lib/omarchy-wslg -type f -exec sed -i 's/\r$//' {} + && \
+    sed -i "s/@DISTRO_NAME@/$DISTRO_NAME/g" \
+      /etc/wsl-distribution.conf /usr/lib/wsl/terminal-profile.json && \
+    if [ "$WSLG" = "1" ]; then \
+      sed -i "s#/usr/share/omarchy#/home/$USERNAME/.local/share/omarchy#g" \
+        /home/$USERNAME/.config/chromium-flags.conf && \
+      chown "$USERNAME:$USERNAME" /home/$USERNAME/.config/chromium-flags.conf && \
+      install -Dm755 /usr/lib/omarchy-wslg/omarchy-wslg-run /usr/local/bin/omarchy-wslg-run && \
+      install -Dm644 /usr/lib/omarchy-wslg/applications/*.desktop /usr/share/applications/ && \
+      while read -r desktop; do \
+        [ -f "/usr/share/applications/$desktop" ] || continue; \
+        if grep -q '^NoDisplay=' "/usr/share/applications/$desktop"; then \
+          sed -i 's/^NoDisplay=.*/NoDisplay=true/' "/usr/share/applications/$desktop"; \
+        else \
+          sed -i '/^\[Desktop Entry\]/a NoDisplay=true' "/usr/share/applications/$desktop"; \
+        fi; \
+      done < /usr/lib/omarchy-wslg/hidden-desktop-entries; \
+    fi && \
+    rm -rf /usr/lib/omarchy-wslg && \
     magick /home/$USERNAME/.local/share/omarchy/icon.png \
       -background none -define icon:auto-resize=256,128,64,48,32,16 \
       /usr/lib/wsl/omarchy.ico && \

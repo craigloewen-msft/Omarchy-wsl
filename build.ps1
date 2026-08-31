@@ -35,6 +35,11 @@
 .PARAMETER NoInput
   Skip fcitx5 input methods. INPUT=0
 
+.PARAMETER Wslg
+  Build the lightweight WSLg application profile. This implies DESKTOP=0,
+  adds a curated GUI application set, and names the distro Omarchy-WSLg.
+  Currently supported on amd64 only.
+
 .PARAMETER NoCache
   Build without the layer cache.
 
@@ -57,6 +62,7 @@ param(
   [switch]$NoLogin,
   [switch]$NoPrinting,
   [switch]$NoInput,
+  [switch]$Wslg,
   [switch]$NoCache
 )
 
@@ -71,17 +77,22 @@ if (-not (Test-Path (Join-Path $root "omarchy\install"))) {
 if (-not $Arch) {
   $Arch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "amd64" }
 }
+if ($Wslg -and $Arch -ne "amd64") {
+  throw "The Omarchy WSLg profile currently supports amd64 only."
+}
 
 # Map switches to 0/1 build args (default 1 = enabled).
 $toggles = [ordered]@{
-  DESKTOP  = if ($NoDesktop)  { 0 } else { 1 }
-  APPS     = if ($NoApps)     { 0 } else { 1 }
-  LOGIN    = if ($NoLogin)    { 0 } else { 1 }
-  PRINTING = if ($NoPrinting) { 0 } else { 1 }
-  INPUT    = if ($NoInput)    { 0 } else { 1 }
+  DESKTOP  = if ($NoDesktop -or $Wslg) { 0 } else { 1 }
+  APPS     = if ($NoApps -or $Wslg)     { 0 } else { 1 }
+  LOGIN    = if ($NoLogin -or $Wslg)    { 0 } else { 1 }
+  PRINTING = if ($NoPrinting -or $Wslg) { 0 } else { 1 }
+  INPUT    = if ($NoInput -or $Wslg)    { 0 } else { 1 }
+  WSLG     = if ($Wslg)       { 1 } else { 0 }
 }
 
-$wslcArgs = @("build", "-t", $Tag, "--build-arg", "ARCH=$Arch")
+$distroName = if ($Wslg) { "Omarchy-WSLg" } else { "Omarchy" }
+$wslcArgs = @("build", "-t", $Tag, "--build-arg", "ARCH=$Arch", "--build-arg", "DISTRO_NAME=$distroName")
 foreach ($k in $toggles.Keys) { $wslcArgs += "--build-arg", "$k=$($toggles[$k])" }
 if ($NoCache) { $wslcArgs += "--no-cache" }
 $wslcArgs += "-f", (Join-Path $root "Containerfile"), $root

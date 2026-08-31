@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omarchy Files
+Comment=Browse files in the Omarchy WSL distribution
+Exec=/usr/local/bin/omarchy-wslg-run nautilus --new-window
+Icon=org.gnome.Nautilus
+Terminal=false
+Categories=System;FileTools;FileManager;

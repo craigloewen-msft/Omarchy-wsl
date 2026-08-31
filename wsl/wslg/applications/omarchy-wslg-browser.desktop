@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omarchy Browser
+Comment=Chromium running in Omarchy WSL
+Exec=/usr/local/bin/omarchy-wslg-run chromium
+Icon=chromium
+Terminal=false
+Categories=Network;WebBrowser;

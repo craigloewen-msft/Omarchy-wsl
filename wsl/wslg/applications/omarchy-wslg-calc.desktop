@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Omacalc
+Comment=Omarchy calculator
+Exec=/usr/local/bin/omarchy-wslg-run omacalc
+Icon=accessories-calculator
+Terminal=false
+Categories=Utility;Calculator;
